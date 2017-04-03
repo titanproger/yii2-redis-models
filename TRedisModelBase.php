@@ -69,7 +69,10 @@ class TRedisModelBase extends ActiveRecord {
     }
 
     public function loadFromDB() {
-        return $this->loadFromKey($this->getRedisKeyName());
+        $success = $this->loadFromKey($this->getRedisKeyName());
+        if($success)
+            $this->afterFind();
+        return $success;
     }
 
 
