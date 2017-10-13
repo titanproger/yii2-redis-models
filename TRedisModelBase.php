@@ -81,8 +81,8 @@ class TRedisModelBase extends ActiveRecord {
             return false;
 
         $insert = $this->getIsNewRecord();
-        if(!$this->beforeSave($insert));
-        return false;
+        if(!$this->beforeSave($insert))
+            return false;
         $result = $this->saveToKey($this->getRedisKeyName());
         if($result)
             $this->afterSave($insert, []);
