@@ -72,6 +72,29 @@ class TRedisConnection extends Connection {
         return  $this->LRANGE($key, $from, $to);
     }
 
+    public function cmdScoreAdd($key, $data, $expires = null) {
+        $ret =  $this->executeCommand('ZADD',  self::ArrayToRedis($data, [$key]));
+        if($expires)
+            $this->cmdKeySetExpireSeconds($key, $expires);
+        return $ret;
+    }
+    public function cmdScoreInc($key, $data, $expires = null) {
+        $ret =  $this->executeCommand('ZINCRBY',  self::ArrayToRedis($data, [$key]));
+        if($expires)
+            $this->cmdKeySetExpireSeconds($key, $expires);
+        return $ret;
+    }
+    public function cmdScoreGet($key, $reverse = false, $from = 0, $to = -1, $with_scores = false) {
+        $name = $reverse ? "ZREVRANGE" : "ZRANGE";
+        $params = [$from , $to ];
+
+        if(!$with_scores)
+            return $this->executeCommand($name, $params);;
+
+        $params[] = "WITHSCORES";
+        $ret = $this->executeCommand($name, $params);
+        return self::ArrayFromRedis($ret);
+    }
 
     private static function ArrayToRedis($data, $init_array = []) {
         $params = &$init_array;
