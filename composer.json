@@ -10,7 +10,7 @@
     ],
     "homepage": "https://github.com/titanproger/yii2-redis-models",
     "type": "yii2-extension",
-    "license": "MIT License",
+    "license": "MIT",
     "authors": [
         {
             "name": "Eugeny Pronin",
