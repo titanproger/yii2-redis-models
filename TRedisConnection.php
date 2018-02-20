@@ -86,7 +86,7 @@ class TRedisConnection extends Connection {
     }
     public function cmdScoreGet($key, $reverse = false, $from = 0, $to = -1, $with_scores = false) {
         $name = $reverse ? "ZREVRANGE" : "ZRANGE";
-        $params = [$from , $to ];
+        $params = [$key , $from , $to ];
 
         if(!$with_scores)
             return $this->executeCommand($name, $params);
