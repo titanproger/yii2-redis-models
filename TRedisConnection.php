@@ -73,13 +73,13 @@ class TRedisConnection extends Connection {
     }
 
     public function cmdScoreAdd($key, $data, $expires = null) {
-        $ret =  $this->executeCommand('ZADD',  self::ArrayToRedis($data, [$key]));
+        $ret =  $this->executeCommand('ZADD',  self::ArrayToRedis($data, [$key], true));
         if($expires)
             $this->cmdKeySetExpireSeconds($key, $expires);
         return $ret;
     }
     public function cmdScoreInc($key, $data, $expires = null) {
-        $ret =  $this->executeCommand('ZINCRBY',  self::ArrayToRedis($data, [$key]));
+        $ret =  $this->executeCommand('ZINCRBY',  self::ArrayToRedis($data, [$key], true));
         if($expires)
             $this->cmdKeySetExpireSeconds($key, $expires);
         return $ret;
@@ -96,11 +96,11 @@ class TRedisConnection extends Connection {
         return self::ArrayFromRedis($ret);
     }
 
-    private static function ArrayToRedis($data, $init_array = []) {
+    private static function ArrayToRedis($data, $init_array = [], $inverse = false) {
         $params = &$init_array;
         foreach($data as $key => $value) {
-            $params[] = $key;
-            $params[] = $value;
+            $params[] = $inverse ? $value : $key;
+            $params[] = $inverse ? $key   : $value;
         }
         return $params;
     }
