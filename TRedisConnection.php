@@ -89,7 +89,7 @@ class TRedisConnection extends Connection {
         $params = [$from , $to ];
 
         if(!$with_scores)
-            return $this->executeCommand($name, $params);;
+            return $this->executeCommand($name, $params);
 
         $params[] = "WITHSCORES";
         $ret = $this->executeCommand($name, $params);

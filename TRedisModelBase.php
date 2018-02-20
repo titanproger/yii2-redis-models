@@ -39,7 +39,7 @@ class TRedisModelBase extends ActiveRecord {
      */
     public static function tableName() {
         $class_name = get_called_class();
-        return str_replace("\\", ":", $class_name);;
+        return str_replace("\\", ":", $class_name);
     }
 
     public function getRedisKeyName() {
