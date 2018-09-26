@@ -13,8 +13,15 @@ class TRedisModelHash extends  TRedisModelBase
 {
     public function updateCounters($counters) {
         $key_name = $this->getRedisKeyName();
-        foreach($counters as $field => $delta) {
-            static::getRedisDb()->cmdHashFieldIncrement($key_name, $field , $delta );
+        foreach($counters as $name => $value) {
+            static::getRedisDb()->cmdHashFieldIncrement($key_name, $name , $value );
+            //duplicates \yii\db\BaseActiveRecord::updateCounters from here
+            if (!isset($this->_attributes[$name]))
+                $this->_attributes[$name] = $value;
+            else
+                $this->_attributes[$name] += $value;
+
+            $this->_oldAttributes[$name] = $this->_attributes[$name];
         }
     }
 
