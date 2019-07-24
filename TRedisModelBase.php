@@ -116,11 +116,11 @@ class TRedisModelBase extends ActiveRecord {
     protected function loadFromJson($json_string, $safe_only = true) {
         if(!$json_string)
             return;
-        $data = \GuzzleHttp\json_decode($json_string, true);
+        $data = json_decode($json_string, true);
         $this->setAttributes( $data, $safe_only);
     }
     protected function saveToJson() {
-        return \GuzzleHttp\json_encode($this->getAttributes());
+        return json_encode($this->getAttributes());
     }
 
 
